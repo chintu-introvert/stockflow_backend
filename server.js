@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 5000;
 app.use(cors()); // Allow all origins in dev
 app.use(express.json());
 
+app.use(cors({
+    origin: 'https://stockflow.vercel.app', // your Vercel URL
+    credentials: true
+}));
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));
