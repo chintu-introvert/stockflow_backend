@@ -19,7 +19,7 @@ const getProducts = async (req, res) => {
         res.json(products);
     } catch (error) {
         console.error('Get products error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -28,7 +28,7 @@ const createProduct = async (req, res) => {
         const { name, sku, description, quantityOnHand, costPrice, sellingPrice, lowStockThreshold } = req.body;
 
         if (!name || !sku) {
-            return res.status(400).json({ message: 'Name and SKU are required' });
+            return res.status(400).json({ error: 'Name and SKU are required' });
         }
 
         const product = await Product.create({
@@ -45,10 +45,10 @@ const createProduct = async (req, res) => {
         res.status(201).json(product);
     } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
-            return res.status(400).json({ message: 'Product with this SKU already exists in your organization' });
+            return res.status(400).json({ error: 'Product with this SKU already exists in your organization' });
         }
         console.error('Create product error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -60,17 +60,17 @@ const updateProduct = async (req, res) => {
         const product = await Product.findOne({ where: { id, organizationId } });
 
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return res.status(404).json({ error: 'Product not found' });
         }
 
         await product.update(req.body);
         res.json(product);
     } catch (error) {
         if (error.name === 'SequelizeUniqueConstraintError') {
-            return res.status(400).json({ message: 'SKU already in use' });
+            return res.status(400).json({ error: 'SKU already in use' });
         }
         console.error('Update product error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -82,14 +82,14 @@ const deleteProduct = async (req, res) => {
         const product = await Product.findOne({ where: { id, organizationId } });
 
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return res.status(404).json({ error: 'Product not found' });
         }
 
         await product.destroy();
         res.json({ message: 'Product deleted' });
     } catch (error) {
         console.error('Delete product error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 

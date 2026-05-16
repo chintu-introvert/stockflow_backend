@@ -6,7 +6,7 @@ const getSettings = async (req, res) => {
         const setting = await Setting.findOne({ where: { organizationId } });
 
         if (!setting) {
-            return res.status(404).json({ message: 'Settings not found' });
+            return res.status(404).json({ error: 'Settings not found' });
         }
 
         res.json({
@@ -14,7 +14,7 @@ const getSettings = async (req, res) => {
         });
     } catch (error) {
         console.error('Get settings error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -26,7 +26,7 @@ const updateSettings = async (req, res) => {
         const setting = await Setting.findOne({ where: { organizationId } });
 
         if (!setting) {
-            return res.status(404).json({ message: 'Settings not found' });
+            return res.status(404).json({ error: 'Settings not found' });
         }
 
         setting.defaultLowStockThreshold = defaultLowStockThreshold;
@@ -35,7 +35,7 @@ const updateSettings = async (req, res) => {
         res.json(setting);
     } catch (error) {
         console.error('Update settings error:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 

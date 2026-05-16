@@ -6,7 +6,7 @@ const authMiddleware = (req, res, next) => {
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ message: 'Authentication token missing' });
+        return res.status(401).json({ error: 'Authentication token missing' });
     }
 
     try {
@@ -17,7 +17,7 @@ const authMiddleware = (req, res, next) => {
         };
         next();
     } catch (error) {
-        return res.status(401).json({ message: 'Invalid or expired token' });
+        return res.status(401).json({ error: 'Invalid or expired token' });
     }
 };
 
